@@ -1,11 +1,17 @@
 // arrow function
-const Button = (props) => {
-  //distractering js
-  const {children = 'Button', classname = 'bg-black'} = props;
-
+const Button = ({
+  children = "Button",
+  classname = "bg-black",
+  onClick = () => {},
+  type = "button"
+}) => {
   return (
-     <button  className={`h-10 px-6 font-semibold rounded-md ${classname} text-white`}>
-          {children}
+    <button
+      className={`h-10 px-6 font-semibold rounded-md ${classname} text-white`}
+      type={type}
+      onClick={() => onClick()}
+    >
+      {children}
     </button>
   )
 }
