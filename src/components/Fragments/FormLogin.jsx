@@ -20,7 +20,7 @@ const FormLogin = () => {
           name="password"
           htmlFor="password"
         />
-        <Button classname="bg-blue-600 w-full">Sign In</Button>
+        <Button classname="bg-blue-600 w-full">Login</Button>
       </form>
     </div>
   )
