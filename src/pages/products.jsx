@@ -1,48 +1,66 @@
-import React, { useState } from "react"
-import CardProduct from "../components/Fragments/CardProduct"
-import Button from "../components/Elements/Button"
-import Counter from "../components/Fragments/Counter"
+import React, { useEffect, useState } from "react";
+import CardProduct from "../components/Fragments/CardProduct";
+import Button from "../components/Elements/Button";
+import Counter from "../components/Fragments/Counter";
 
 // Data Products
 const products = [
   {
     id: 1,
-    name: "Sepatu Baru",
+    name: "Sepatu 1",
     price: 500000,
     url: "/images/shoes1.jpg",
     description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,consequuntur saepe libero nam ab inventore totam quas quod unde vel.`
   },
   {
     id: 2,
-    name: "Sepatu Lama",
+    name: "Sepatu 2",
     price: 500000,
     url: "/images/shoes1.jpg",
     description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,consequuntur saepe libero nam ab inventore totam quas quod unde vel.`
   },
   {
     id: 3,
-    name: "Sepatu",
+    name: "Sepatu 3",
+    price: 500000,
+    url: "/images/shoes1.jpg",
+    description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,consequuntur saepe libero nam ab inventore totam quas quod unde vel.`
+  },
+  {
+    id: 4,
+    name: "Sepatu 4",
     price: 500000,
     url: "/images/shoes1.jpg",
     description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,consequuntur saepe libero nam ab inventore totam quas quod unde vel.`
   }
-]
+];
 
-const email = localStorage.getItem("email")
+const email = localStorage.getItem("email");
 
 const ProductsPage = () => {
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      qty: 1
+  const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem("cart")) || []);
+  }, []);
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      const sum = cart.reduce((acc, item) => {
+        const product = products.find((product) => product.id === item.id);
+        return acc + product.price * item.qty;
+      }, 0);
+      setTotalPrice(sum);
+      localStorage.setItem("cart", JSON.stringify(cart));
     }
-  ])
+  }, [cart]);
 
   const handleLogout = () => {
-    localStorage.removeItem("email")
-    localStorage.removeItem("password")
-    window.location.href = "/login"
-  }
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    window.location.href = "/login";
+  };
 
   const handleAddToCart = (id) => {
     if (cart.find((item) => item.id === id)) {
@@ -50,11 +68,11 @@ const ProductsPage = () => {
         cart.map((item) =>
           item.id === id ? { ...item, qty: item.qty + 1 } : item
         )
-      )
+      );
     } else {
-      setCart([...cart, { id, qty: 1 }])
+      setCart([...cart, { id, qty: 1 }]);
     }
-  }
+  };
 
   return (
     <>
@@ -95,7 +113,7 @@ const ProductsPage = () => {
               {cart.map((item) => {
                 const product = products.find(
                   (product) => product.id === item.id
-                )
+                );
                 return (
                   <tr key={item.id}>
                     <td>{product.name}</td>
@@ -113,14 +131,26 @@ const ProductsPage = () => {
                       })}
                     </td>
                   </tr>
-                )
+                );
               })}
+
+              <tr>
+                <td colSpan={3} className="font-bold">
+                  Total Price
+                </td>
+                <td className="font-bold">
+                  {totalPrice.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR"
+                  })}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ProductsPage
+export default ProductsPage;
