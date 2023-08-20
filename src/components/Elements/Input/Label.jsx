@@ -5,7 +5,10 @@ const Label = (props) => {
 
   return (
     <div>
-      <label htmlFor={htmlFor} className="block text-slate-700 text-sm mb-2">
+      <label
+        htmlFor={htmlFor}
+        className="block text-slate-700 text-sm mb-2 ursor-pointer"
+      >
         {children}
       </label>
     </div>
